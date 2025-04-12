@@ -6,7 +6,8 @@
    Consider an e-commerce system where different types of shipping methods need to be instantiated based on user input or preferences.
    The Factory Method Pattern helps decouple the creation of shipping methods from the logic that uses them, allowing new types of shipping methods to be added without changing the existing code.
    This makes it easy to extend the system with new shipping methods without modifying existing functionality, promoting open/closed principle.
-*/#include <iostream>
+*/
+#include <iostream>
 #include <string>
 
 // Base class for all Shipping Methods
