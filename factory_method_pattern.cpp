@@ -1,12 +1,3 @@
-/* The Factory Method Pattern provides an interface for creating objects, but allows subclasses to alter the type of objects that will be created. 
-   This pattern is used when you need to create objects of different types but want to let subclasses decide which class to instantiate. 
-   It's commonly used when a class can’t anticipate the class of objects it must create.
-
-   Real-World Example:
-   Consider an e-commerce system where different types of shipping methods need to be instantiated based on user input or preferences.
-   The Factory Method Pattern helps decouple the creation of shipping methods from the logic that uses them, allowing new types of shipping methods to be added without changing the existing code.
-*/
-
 #include <iostream>
 #include <string>
 
@@ -54,32 +45,18 @@ public:
     }
 };
 
-// Creator class (Factory) which will be responsible for creating shipping methods
+// Creator class (Factory) responsible for creating shipping methods
 class ShippingFactory {
 public:
-    virtual ShippingMethod* createShippingMethod() = 0;  // Factory method
-    virtual ~ShippingFactory() {}
-};
-
-// Concrete Creator classes
-class AirShippingFactory : public ShippingFactory {
-public:
-    ShippingMethod* createShippingMethod() override {
-        return new AirShipping();  // Creates an instance of AirShipping
-    }
-};
-
-class SeaShippingFactory : public ShippingFactory {
-public:
-    ShippingMethod* createShippingMethod() override {
-        return new SeaShipping();  // Creates an instance of SeaShipping
-    }
-};
-
-class GroundShippingFactory : public ShippingFactory {
-public:
-    ShippingMethod* createShippingMethod() override {
-        return new GroundShipping();  // Creates an instance of GroundShipping
+    static ShippingMethod* createShippingMethod(int shippingChoice) {
+        // Select the appropriate shipping method based on user choice
+        if (shippingChoice == 1) {
+            return new AirShipping();  // Create AirShipping
+        } else if (shippingChoice == 2) {
+            return new SeaShipping();  // Create SeaShipping
+        } else {
+            return new GroundShipping();  // Create GroundShipping
+        }
     }
 };
 
@@ -89,18 +66,8 @@ int main() {
     std::cout << "Enter shipping method (1 for Air, 2 for Sea, 3 for Ground): ";
     std::cin >> shippingChoice;
 
-    ShippingFactory* factory = nullptr;
-
-    // Select the appropriate factory based on user choice
-    if (shippingChoice == 1) {
-        factory = new AirShippingFactory();
-    } else if (shippingChoice == 2) {
-        factory = new SeaShippingFactory();
-    } else {
-        factory = new GroundShippingFactory();
-    }
-
-    ShippingMethod* shippingMethod = factory->createShippingMethod();
+    // Use the factory to create the appropriate shipping method based on user choice
+    ShippingMethod* shippingMethod = ShippingFactory::createShippingMethod(shippingChoice);
 
     // Book the shipment and calculate cost for a weight of 10 kg and distance of 500 km
     shippingMethod->bookShipment();
@@ -109,7 +76,6 @@ int main() {
 
     // Clean up
     delete shippingMethod;
-    delete factory;
 
     return 0;
 }
